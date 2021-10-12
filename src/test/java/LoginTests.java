@@ -7,31 +7,25 @@ import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-public class Tests {
+public class LoginTests {
     private WebDriver driver;
-    private HomePage home;
-    private AboutPage about;
+    private LoginPage login;
 
     @BeforeMethod
     public void setUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        home = new HomePage(driver);
-        about = new AboutPage(driver);
+        driver.manage().window().maximize();
 
-        home.open();
+        login = new LoginPage(driver);
+        login.open();
     }
 
     @Test
-    public void homePage_IsLogoDisplayed_ShouldWebsiteLoad() {
-        assertThat(home.isLoaded()).isTrue();
-    }
+    public void signIn_AsAdmin_ShouldBeLoggedIn() {
+        login.signIn();
 
-    @Test
-    public void homePage_UserClicksAboutLink_ShouldBeRedirectedToAboutPage() {
-        home.goToAboutPage();
-
-        assertThat(about.getUrl()).isEqualTo(driver.getCurrentUrl());
+        assertThat(login.isSigned()).isTrue();
     }
 
     @AfterMethod
