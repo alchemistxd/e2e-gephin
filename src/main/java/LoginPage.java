@@ -2,10 +2,13 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
-public class LoginPage {
-    private WebDriver driver;
+import java.io.IOException;
+import java.util.Properties;
 
-    public LoginPage(WebDriver driver) {
+public final class LoginPage {
+    private final WebDriver driver;
+
+    public LoginPage(final WebDriver driver) {
         this.driver = driver;
     }
 
@@ -13,22 +16,22 @@ public class LoginPage {
         driver.get("https://gephin.ml/wp-admin");
     }
 
-    public void signIn() {
-        WebElement userField = driver.findElement(By.xpath("//*[@id=\"user_login\"]"));
-        userField.sendKeys("Admin");
+    public void signIn() throws IOException {
+        final Properties credentials = PropertyReader.from("res/conf/creds.properties");
 
-        WebElement passwordField = driver.findElement(By.xpath("//*[@id=\"user_pass\"]"));
-        passwordField.sendKeys("T0Cxt!EbAb8YOthdL!*X#0ci");
+        final WebElement userField = driver.findElement(By.xpath("//*[@id=\"user_login\"]"));
+        userField.sendKeys(credentials.getProperty("admin_user"));
 
-        WebElement logInButton = driver.findElement(By.xpath("//*[@id=\"wp-submit\"]"));
+        final WebElement passwordField = driver.findElement(By.xpath("//*[@id=\"user_pass\"]"));
+        passwordField.sendKeys(credentials.getProperty("admin_pass"));
+
+        final WebElement logInButton = driver.findElement(By.xpath("//*[@id=\"wp-submit\"]"));
         logInButton.click();
     }
 
     public boolean isSigned() {
-        WebElement userGreeting = driver.findElement(By.xpath("//a[contains(text(), 'Howdy')]"));
+        final WebElement userGreeting = driver.findElement(By.xpath("//a[contains(text(), 'Howdy')]"));
         return userGreeting.isDisplayed();
     }
 }
-
-
 
