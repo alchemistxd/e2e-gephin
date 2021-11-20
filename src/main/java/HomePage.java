@@ -1,17 +1,23 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
 
-public class HomePage {
-    private WebDriver driver;
+public class HomePage extends Page {
+
+    @CacheLookup
+    @FindBy(xpath = "/html/body/header/div/div/div[1]/div/div/div/div[1]/a/img")
+    private WebElement logo;
+
+    @CacheLookup
+    @FindBy(xpath = "//*[@id=\"menu-item-36\"]/a")
+    private WebElement aboutButton;
 
     public HomePage(WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public boolean isLoaded() {
-        WebElement logo = driver.findElement(By.xpath("/html/body/header/div/div/div[1]/div/div/div/div[1]/a/img"));
-
         return logo.isDisplayed();
     }
 
@@ -20,7 +26,6 @@ public class HomePage {
     }
 
     public void goToAboutPage() {
-        WebElement aboutButton = driver.findElement(By.xpath("//*[@id=\"menu-item-36\"]/a"));
         aboutButton.click();
     }
 }
