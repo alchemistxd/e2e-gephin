@@ -75,4 +75,4 @@ fabric.properties
 
 *.xml
 *.class
-.res/conf/*.properties
+res/conf/*.properties
