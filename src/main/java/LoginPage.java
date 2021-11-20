@@ -1,12 +1,28 @@
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindBy;
 
-public final class LoginPage {
-    private final WebDriver driver;
+public final class LoginPage extends Page {
+
+    @CacheLookup
+    @FindBy(xpath = "//*[@id=\"user_login\"]")
+    private WebElement userField;
+
+    @CacheLookup
+    @FindBy(xpath = "//*[@id=\"user_pass\"]")
+    private WebElement passwordField;
+
+    @CacheLookup
+    @FindBy(xpath = "//*[@id=\"wp-submit\"]")
+    private WebElement logInButton;
+
+    @CacheLookup
+    @FindBy(xpath = "//a[contains(text(), 'Howdy')]")
+    private WebElement userGreeting;
 
     public LoginPage(final WebDriver driver) {
-        this.driver = driver;
+        super(driver);
     }
 
     public void open() {
@@ -14,18 +30,12 @@ public final class LoginPage {
     }
 
     public void signIn(String user, String password) {
-        final WebElement userField = driver.findElement(By.xpath("//*[@id=\"user_login\"]"));
         userField.sendKeys(user);
-
-        final WebElement passwordField = driver.findElement(By.xpath("//*[@id=\"user_pass\"]"));
         passwordField.sendKeys(password);
-
-        final WebElement logInButton = driver.findElement(By.xpath("//*[@id=\"wp-submit\"]"));
         logInButton.click();
     }
 
     public boolean isSigned() {
-        final WebElement userGreeting = driver.findElement(By.xpath("//a[contains(text(), 'Howdy')]"));
         return userGreeting.isDisplayed();
     }
 }
